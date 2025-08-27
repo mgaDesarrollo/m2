@@ -16,10 +16,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Users, UserPlus, Edit, Trash2, Shield } from "lucide-react"
+import { Users, UserPlus, Edit, Trash2, Shield, Grid3X3 } from "lucide-react"
 import { Sidebar } from "@/components/sidebar"
 
 export default function PermisosPage() {
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -111,11 +112,26 @@ export default function PermisosPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Sidebar común para todas las páginas */}
-      <Sidebar />
+      {/* Sidebar - responsive */}
+      <Sidebar 
+        isMobileOpen={isMobileSidebarOpen} 
+        onCloseMobile={() => setIsMobileSidebarOpen(false)} 
+      />
 
-      {/* Main Content */}
-      <div className="ml-64 p-8">
+      {/* Botón para mostrar sidebar en móvil */}
+      <div className="fixed top-4 left-4 z-20 lg:hidden">
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+          className="bg-background shadow-md"
+        >
+          <Grid3X3 className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {/* Main Content - responsive */}
+      <div className="pt-16 lg:pt-0 lg:ml-64 p-4 lg:p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-light text-foreground mb-2">Permisos de Usuarios</h1>
           <p className="text-muted-foreground">
@@ -172,61 +188,73 @@ export default function PermisosPage() {
               </Button>
             </div>
           </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Usuario</TableHead>
-                  <TableHead>Rol</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead>Permisos</TableHead>
-                  <TableHead>Acciones</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <div>
-                        <div className="font-medium text-foreground">{user.name}</div>
-                        <div className="text-sm text-muted-foreground">{user.email}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={user.role === "Administrador" ? "default" : "secondary"}>{user.role}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={user.status === "Activo" ? "default" : "secondary"}>{user.status}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm text-muted-foreground">
-                        {Object.values(user.permissions).filter(Boolean).length} de{" "}
-                        {Object.keys(user.permissions).length} permisos
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEditUser(user)}
-                          className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground bg-transparent"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+          <CardContent className="px-0 sm:px-6">
+            <div className="overflow-auto">
+              <Table className="min-w-[800px]">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Usuario</TableHead>
+                    <TableHead className="hidden md:table-cell">Rol</TableHead>
+                    <TableHead className="hidden md:table-cell">Estado</TableHead>
+                    <TableHead className="hidden md:table-cell">Permisos</TableHead>
+                    <TableHead>Acciones</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {users.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium text-foreground">{user.name}</div>
+                          <div className="text-sm text-muted-foreground">{user.email}</div>
+                          <div className="md:hidden mt-2 space-y-1">
+                            <div className="flex items-center space-x-2">
+                              <Badge variant={user.role === "Administrador" ? "default" : "secondary"}>{user.role}</Badge>
+                              <Badge variant={user.status === "Activo" ? "default" : "secondary"}>{user.status}</Badge>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {Object.values(user.permissions).filter(Boolean).length} de{" "}
+                              {Object.keys(user.permissions).length} permisos
+                            </div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <Badge variant={user.role === "Administrador" ? "default" : "secondary"}>{user.role}</Badge>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <Badge variant={user.status === "Activo" ? "default" : "secondary"}>{user.status}</Badge>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <div className="text-sm text-muted-foreground">
+                          {Object.values(user.permissions).filter(Boolean).length} de{" "}
+                          {Object.keys(user.permissions).length} permisos
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEditUser(user)}
+                            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground bg-transparent"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 

@@ -24,6 +24,7 @@ import {
 export function DashboardContent() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userEmail, setUserEmail] = useState("")
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -42,6 +43,10 @@ export function DashboardContent() {
     localStorage.removeItem("isAuthenticated")
     localStorage.removeItem("userEmail")
     router.push("/")
+  }
+  
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen(!isMobileSidebarOpen)
   }
 
   if (!isAuthenticated) {
@@ -130,17 +135,26 @@ export function DashboardContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Sidebar */}
-      <Sidebar />
+      {/* Sidebar - responsive */}
+      <Sidebar 
+        isMobileOpen={isMobileSidebarOpen} 
+        onCloseMobile={() => setIsMobileSidebarOpen(false)} 
+      />
 
-      <div className="lg:hidden fixed top-4 left-4 z-50">
-        <Button variant="outline" size="sm">
+      {/* Botón para mostrar sidebar en móvil */}
+      <div className="fixed top-4 left-4 z-20 lg:hidden">
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={toggleMobileSidebar}
+          className="bg-background shadow-md"
+        >
           <Grid3X3 className="h-4 w-4" />
         </Button>
       </div>
 
-      {/* Main Content */}
-      <div className="lg:ml-64 p-4 lg:p-8">
+      {/* Main Content - responsive */}
+      <div className="pt-16 lg:pt-0 lg:ml-64 p-4 lg:p-8">
         {/* Header */}
         <div className="mb-6 lg:mb-8 mt-12 lg:mt-0">
           <h1 className="text-2xl lg:text-3xl font-light text-foreground mb-2">Dashboard</h1>
@@ -171,9 +185,9 @@ export function DashboardContent() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
           {/* Proyectos Recientes */}
-          <Card className="xl:col-span-2">
+          <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="text-foreground">Proyectos Recientes</CardTitle>
               <CardDescription>Tus proyectos más recientes y su estado actual</CardDescription>
@@ -183,7 +197,7 @@ export function DashboardContent() {
                 {recentProjects.map((project, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors duration-200"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors duration-200"
                   >
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium text-foreground truncate">{project.name}</h4>
@@ -193,7 +207,7 @@ export function DashboardContent() {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`ml-2 shrink-0 ${
+                      className={`mt-2 sm:mt-0 ml-0 sm:ml-2 shrink-0 w-fit ${
                         project.status === "Completado" 
                           ? "bg-green-100 text-green-700 border-green-300" 
                           : project.status === "En progreso" 
