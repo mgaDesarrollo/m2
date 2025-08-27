@@ -117,7 +117,7 @@ export default function PermisosPage() {
       {/* Main Content */}
       <div className="ml-64 p-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Permisos de Usuarios</h1>
+          <h1 className="text-3xl font-light text-foreground mb-2">Permisos de Usuarios</h1>
           <p className="text-muted-foreground">
             Gestiona los usuarios y sus permisos de acceso a diferentes secciones del sistema.
           </p>

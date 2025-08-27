@@ -17,7 +17,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Grid3X3, Plus, Edit, Trash2, ArrowLeft } from "lucide-react"
+import { Grid3X3, Plus, Edit, Trash2 } from "lucide-react"
+import { Sidebar } from "@/components/sidebar"
 
 export default function RubrosPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -50,21 +51,16 @@ export default function RubrosPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background">
+      {/* Sidebar compartido */}
+      <Sidebar />
+
+      <div className="lg:ml-64 p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              onClick={() => router.push("/dashboard")}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Volver al Dashboard
-            </Button>
+          <div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground flex items-center">
+              <h1 className="text-3xl font-light text-foreground flex items-center">
                 <Grid3X3 className="mr-3 h-8 w-8 text-green-600" />
                 Gestión de Rubros
               </h1>
