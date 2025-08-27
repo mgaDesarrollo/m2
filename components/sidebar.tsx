@@ -52,8 +52,12 @@ export function Sidebar() {
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2">
           <Button
-            variant={isActive("/dashboard") && !isActive("/dashboard/") ? "default" : "ghost"}
-            className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors duration-200"
+            variant="ghost"
+            className={`w-full justify-start transition-colors duration-200 ${
+              isActive("/dashboard") && !isActive("/dashboard/") 
+                ? "bg-sidebar-accent/30 text-primary border-l-2 border-primary" 
+                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            }`}
             onClick={() => router.push("/dashboard")}
           >
             <Home className="mr-3 h-4 w-4" />
@@ -74,8 +78,12 @@ export function Sidebar() {
             Proyectos
           </Button>
           <Button
-            variant={isActive("/dashboard/rubros") ? "default" : "ghost"}
-            className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors duration-200"
+            variant="ghost"
+            className={`w-full justify-start transition-colors duration-200 ${
+              isActive("/dashboard/rubros") 
+                ? "bg-sidebar-accent/30 text-primary border-l-2 border-primary" 
+                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            }`}
             onClick={() => router.push("/dashboard/rubros")}
           >
             <Grid3X3 className="mr-3 h-4 w-4" />
@@ -96,8 +104,12 @@ export function Sidebar() {
             Equipo
           </Button>
           <Button
-            variant={isActive("/dashboard/permisos") ? "default" : "ghost"}
-            className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors duration-200"
+            variant="ghost"
+            className={`w-full justify-start transition-colors duration-200 ${
+              isActive("/dashboard/permisos") 
+                ? "bg-sidebar-accent/30 text-primary border-l-2 border-primary" 
+                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            }`}
             onClick={() => router.push("/dashboard/permisos")}
           >
             <Settings className="mr-3 h-4 w-4" />
